@@ -25,8 +25,8 @@ if os.path.exists('token.pickle'):
 if not creds:
     google_creds = os.getenv("GOOGLE_CREDENTIALS")
 
-with open("credentials.json", "w") as f:
-    f.write(google_creds)
+    with open("credentials.json", "w") as f:
+      f.write(google_creds)
 
 flow = InstalledAppFlow.from_client_secrets_file(
     'credentials.json',
