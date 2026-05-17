@@ -316,6 +316,7 @@ async def handle(message: types.Message):
             photo = message.photo[-1]
 
             file_info = await bot.get_file(photo.file_id)
+            telegram_photo_link = f"https://api.telegram.org/file/bot{TOKEN}/{file_info.file_path}"
             downloaded = await bot.download_file(file_info.file_path)
 
             os.makedirs("temp", exist_ok=True)
@@ -325,8 +326,7 @@ async def handle(message: types.Message):
             with open(filename, "wb") as f:
                 f.write(downloaded.read())
 
-            full_path = os.path.abspath(filename)
-            user_data[user_id]["photo"] = full_path
+            user_data[user_id]["photo"] = telegram_photo_link
             
             user_state[user_id] = "manager"
             save_user_state(user_id)
