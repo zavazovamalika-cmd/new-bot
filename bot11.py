@@ -356,8 +356,11 @@ async def handle(message: types.Message):
 
         await message.answer(preview, reply_markup=confirm_menu())
         return
+    else:
+     print("CURRENT STATE:", user_state.get(user_id))
+     print("USER TEXT:", text)
 
-    elif user_state.get(user_id) == "confirm":
+     if user_state.get(user_id) == "confirm":
 
         if text == "Подтвердить":
             print("CONFIRM BUTTON PRESSED")
@@ -379,7 +382,7 @@ async def handle(message: types.Message):
 
             return
 
-    elif text == "Изменить":
+     elif text == "Изменить":
             user_state[user_id] = "edit_select"
             save_user_state(user_id)
 
@@ -389,15 +392,15 @@ async def handle(message: types.Message):
             )
             return
 
-    elif user_state.get(user_id) == "edit_select":
+     elif user_state.get(user_id) == "edit_select":
 
-     if text == "Отмена":
-        user_state[user_id] = "confirm"
-        save_user_state(user_id)
+          if text == "Отмена":
+           user_state[user_id] = "confirm"
+           save_user_state(user_id)
 
-        data = user_data[user_id]
+           data = user_data[user_id]
 
-        preview = (
+           preview = (
             f"Проверь:\n\n"
             f"ФИО: {data['name']}\n"
             f"Госномер: {data['car']}\n"
@@ -410,8 +413,8 @@ async def handle(message: types.Message):
             f"Управляющий: {data['manager']}"
         )
 
-        await message.answer(preview, reply_markup=confirm_menu())
-        return
+           await message.answer(preview, reply_markup=confirm_menu())
+           return
 
     fields = {
         "ФИО": "name",
