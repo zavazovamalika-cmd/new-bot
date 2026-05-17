@@ -364,20 +364,25 @@ async def handle(message: types.Message):
     elif user_state.get(user_id) == "confirm":
 
         if text == "Подтвердить":
-            
-            save_to_google(user_data[user_id])
 
-            clear_user_state(user_id)
-            user_state[user_id] = None
-            user_data[user_id] = {}
+            try:
+               save_to_google(user_data[user_id])
 
-            await message.answer(
+               clear_user_state(user_id)
+               user_state[user_id] = None
+               user_data[user_id] = {}
+
+               await message.answer(
                 "Сохранено!",
                 reply_markup=main_menu()
             )
+
+            except Exception as e:
+               await message.answer(f"Ошибка: {e}")
+
             return
 
-        elif text == "Изменить":
+    elif text == "Изменить":
             user_state[user_id] = "edit_select"
             save_user_state(user_id)
 
