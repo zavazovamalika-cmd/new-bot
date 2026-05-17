@@ -3,7 +3,6 @@ import asyncio
 import sqlite3
 import gspread
 import json
-import pickle
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
