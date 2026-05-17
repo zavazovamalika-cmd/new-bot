@@ -412,7 +412,8 @@ async def handle(message: types.Message):
             f"Фото: {data.get('photo', 'Нет')}\n"
             f"Управляющий: {data['manager']}"
         )
-
+           user_state[user_id] = "confirm"
+           print("STATE SET TO CONFIRM")
            await message.answer(preview, reply_markup=confirm_menu())
            return
 
