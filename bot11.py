@@ -1,6 +1,5 @@
 import os
 import asyncio
-import json
 import sqlite3
 import gspread
 import json
@@ -27,9 +26,8 @@ creds = Credentials.from_service_account_info(
     creds_dict,
     scopes=scope
 )
-drive_service = build('drive', 'v3', credentials=creds)
-
 client = gspread.authorize(creds)
+drive_service = build('drive', 'v3', credentials=creds)
 TOKEN = "8678766563:AAHop7Gh9MNA7OyrPxGQc-M0xut9OUDyg0k"
 
 
@@ -316,7 +314,6 @@ async def handle(message: types.Message):
             photo = message.photo[-1]
 
             file_info = await bot.get_file(photo.file_id)
-            telegram_photo_link = f"https://api.telegram.org/file/bot{TOKEN}/{file_info.file_path}"
             downloaded = await bot.download_file(file_info.file_path)
 
             os.makedirs("temp", exist_ok=True)
@@ -326,7 +323,8 @@ async def handle(message: types.Message):
             with open(filename, "wb") as f:
                 f.write(downloaded.read())
 
-            user_data[user_id]["photo"] = telegram_photo_link
+            full_path = os.path.abspath(filename)
+            user_data[user_id]["photo"] = full_path
             
             user_state[user_id] = "manager"
             save_user_state(user_id)
