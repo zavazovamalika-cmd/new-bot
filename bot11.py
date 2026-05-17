@@ -4,6 +4,7 @@ import json
 import sqlite3
 import gspread
 import json
+import pickle
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -11,20 +12,21 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from datetime import datetime
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from google_auth_oauthlib.flow import InstalledAppFlow
-import pickle
+from google.oauth2.service_account import Credentials
 
-SCOPES = ['https://www.googleapis.com/auth/drive']
+scope = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive"
+]
 
-creds = None
+google_creds = os.getenv("GOOGLE_CREDENTIALS")
 
-if os.path.exists('token.pickle'):
-    with open('token.pickle', 'rb') as token:
-        creds = pickle.load(token)
+creds_dict = json.loads(google_creds)
 
-drive_service = build('drive', 'v3', credentials=creds)
-client = gspread.authorize(creds)
-
+creds = Credentials.from_service_account_info(
+    creds_dict,
+    scopes=scope
+)
 TOKEN = "8678766563:AAHop7Gh9MNA7OyrPxGQc-M0xut9OUDyg0k"
 
 
