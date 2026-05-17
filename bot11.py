@@ -27,6 +27,9 @@ creds = Credentials.from_service_account_info(
     creds_dict,
     scopes=scope
 )
+drive_service = build('drive', 'v3', credentials=creds)
+
+client = gspread.authorize(creds)
 TOKEN = "8678766563:AAHop7Gh9MNA7OyrPxGQc-M0xut9OUDyg0k"
 
 
