@@ -11,21 +11,16 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.filters import Command
 from datetime import datetime
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
-from google.oauth2.service_account import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+import pickle
 
-scope = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
+SCOPES = ['https://www.googleapis.com/auth/drive']
 
-google_creds = os.getenv("GOOGLE_CREDENTIALS")
+creds = None
 
-creds_dict = json.loads(google_creds)
-
-creds = Credentials.from_service_account_info(
-    creds_dict,
-    scopes=scope
-)
+if os.path.exists('token.pickle'):
+    with open('token.pickle', 'rb') as token:
+        creds = pickle.load(token)
 
 drive_service = build('drive', 'v3', credentials=creds)
 client = gspread.authorize(creds)
