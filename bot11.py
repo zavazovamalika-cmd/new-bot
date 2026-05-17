@@ -12,13 +12,17 @@ from datetime import datetime
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from google.oauth2.service_account import Credentials
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+CREDENTIALS_PATH = os.path.join(BASE_DIR, "credentials.json")
+
 scope = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
 
 creds = Credentials.from_service_account_file(
-    "credentials.json",
+     CREDENTIALS_PATH,
     scopes=scope
 )
 client = gspread.authorize(creds)
@@ -43,10 +47,6 @@ CREATE TABLE IF NOT EXISTS user_states (
 )
 """)
 conn.commit()
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-CREDENTIALS_PATH = os.path.join(BASE_DIR, "credentials.json")
 
 
 scope = [
@@ -89,8 +89,6 @@ def clear_user_state(user_id):
     )
     conn.commit()
 
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 
