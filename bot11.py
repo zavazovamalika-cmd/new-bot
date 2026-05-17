@@ -172,7 +172,8 @@ def upload_to_drive(file_path):
     return f"https://drive.google.com/file/d/{file_id}/view"
     
 def save_to_google(data):
-    from datetime import datetime
+    
+    print("SAVE FUNCTION STARTED")
 
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d %H:%M")
@@ -359,6 +360,7 @@ async def handle(message: types.Message):
     elif user_state.get(user_id) == "confirm":
 
         if text == "Подтвердить":
+            print("CONFIRM BUTTON PRESSED")
 
             try:
                save_to_google(user_data[user_id])
