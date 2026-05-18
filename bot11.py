@@ -174,15 +174,23 @@ def save_to_google(data):
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d %H:%M")
     date_only = now.strftime("%Y-%m-%d")
+    
+    print('Открываю таблицу')
 
     spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1ng2BZi-7_FeI7UUW55NcUP-oYZvrpAULB4FBp_baGFM/edit")
-
+    print('Таблица открыта')
     manager = data["manager"]  
     
     try:
+        print('ИЩУУУУ')
         sheet = spreadsheet.worksheet(manager)
-    except:
-        sheet = spreadsheet.add_worksheet(title=manager, rows="1000", cols="20")
+        print('НАШЕЕЕЛ')
+    except Exception as e:
+        print('Таблица ННАЙДЕНА')
+        sheet = spreadsheet.add_worksheet(
+            title=manager, rows="1000", cols="20")
+        
+        print('Страница создана')
 
         
         sheet.append_row([
@@ -198,6 +206,7 @@ def save_to_google(data):
             "sum",
             "km_today"
         ])
+        print(' Загаловки дабавлены')
 
     
     photo_link = ""
