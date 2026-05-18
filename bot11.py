@@ -144,12 +144,17 @@ def edit_menu():
     )
 
 def upload_to_drive(file_path):
+    print("НАЧАЛАСЬ ЗАГРУЗКА")
+    print("ПУТЬ К ФАЙЛУ:", file_path)
     file_metadata = {
         'name': os.path.basename(file_path),
         'parents': [FOLDER_ID]
     }
+    print("МЕТАДАННЫЕ СОЗДАНЫ")
 
     media = MediaFileUpload(file_path, resumable=True)
+
+    print("MEDIA СОЗДАН")
 
     file = drive_service.files().create(
         body=file_metadata,
@@ -158,12 +163,18 @@ def upload_to_drive(file_path):
         supportsAllDrives=True
     ).execute()
 
+    print("ФАЙЛ ЗАГРУЖЕН")
+
     file_id = file.get('id')
+
+    print("ID ФАЙЛА:", file_id)
 
     drive_service.permissions().create(
         fileId=file_id,
         body={'type': 'anyone', 'role': 'reader'}
     ).execute()
+    
+    print("ДОСТУП ВЫДАН")
 
     return f"https://drive.google.com/file/d/{file_id}/view"
     
