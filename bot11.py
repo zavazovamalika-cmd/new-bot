@@ -14,7 +14,7 @@ from google.oauth2.service_account import Credentials
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-CREDENTIALS_PATH = os.path.join(BASE_DIR, "credentials.json")
+CREDENTIALS_PATH = os.path.join(BASE_DIR, "cred.json")
 
 scope = [
     "https://www.googleapis.com/auth/spreadsheets",
