@@ -177,8 +177,14 @@ def save_to_google(data):
     
     print('Открываю таблицу')
 
-    spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1m7yTaIIn7IhnSBD8p35-Cz9NuoZmGs2jzVA8Js9kVdk/edit?usp=sharing")
-    print('Таблица открыта')
+    try:
+        spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1m7yTaIIn7IhnSBD8p35-Cz9NuoZmGs2jzVA8Js9kVdk/edit?usp=sharing")
+        print('Таблица открыта')
+
+
+    except Exception as e:
+        print("OPEN ERROR:", repr(e))
+        raise
     manager = data["manager"]  
 
     try:
