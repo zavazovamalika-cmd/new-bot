@@ -11,7 +11,7 @@ from aiogram.filters import Command
 from datetime import datetime
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from google.oauth2.service_account import Credentials
-
+from google.oauth2.credentials import Credentials as OAuthCredentials
 
 scope = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -32,7 +32,18 @@ creds = Credentials.from_service_account_info(
     scopes=scope
 )
 client = gspread.authorize(creds)
-drive_service = build('drive', 'v3', credentials=creds)
+drive_creds = OAuthCredentials(
+    token=None,
+    refresh_token=os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN"),
+    token_uri="https://oauth2.googleapis.com/token",
+    client_id=os.getenv("GOOGLE_OAUTH_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+    scopes=["https://www.googleapis.com/auth/drive"],
+)
+
+drive_service = build("drive", "v3", credentials=drive_creds)
+
+
 TOKEN = "8678766563:AAHFf6TWhwGQD1zRQGmFAKnQF_sCWskp2oA"
 
 
