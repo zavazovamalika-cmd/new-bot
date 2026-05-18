@@ -177,10 +177,10 @@ def save_to_google(data):
     
     print('Открываю таблицу')
 
-    spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1ng2BZi-7_FeI7UUW55NcUP-oYZvrpAULB4FBp_baGFM/edit?usp=sharing")
+    spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1m7yTaIIn7IhnSBD8p35-Cz9NuoZmGs2jzVA8Js9kVdk/edit?usp=sharing")
     print('Таблица открыта')
     manager = data["manager"]  
-    
+
     try:
         print('ИЩУУУУ')
         sheet = spreadsheet.worksheet(manager)
