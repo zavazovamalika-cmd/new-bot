@@ -20,6 +20,7 @@ scope = [
 
 
 google_creds = json.loads(os.getenv("GOOGLE_CREDENTIALS_JSON"))
+google_creds["private_key"] = google_creds["private_key"].replace("\\n", "\n")
 
 creds = Credentials.from_service_account_info(
     google_creds,
@@ -173,7 +174,7 @@ def upload_to_drive(file_path):
         fileId=file_id,
         body={'type': 'anyone', 'role': 'reader'}
     ).execute()
-    
+
     print("ДОСТУП ВЫДАН")
 
     return f"https://drive.google.com/file/d/{file_id}/view"
