@@ -1,8 +1,8 @@
+import json
 import os
 import asyncio
 import sqlite3
 import gspread
-import json
 
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
@@ -12,17 +12,17 @@ from datetime import datetime
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from google.oauth2.service_account import Credentials
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-CREDENTIALS_PATH = os.path.join(BASE_DIR, "cred.json")
 
 scope = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
 
-creds = Credentials.from_service_account_file(
-     CREDENTIALS_PATH,
+
+google_creds = json.loads(os.getenv("GOOGLE_CREDENTIALS_JSON"))
+
+creds = Credentials.from_service_account_info(
+    google_creds,
     scopes=scope
 )
 client = gspread.authorize(creds)
