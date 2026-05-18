@@ -19,8 +19,13 @@ scope = [
 ]
 
 
-google_creds = json.loads(os.getenv("GOOGLE_CREDENTIALS_JSON"))
+raw_creds = os.getenv("GOOGLE_CREDENTIALS_JSON")
+if not raw_creds:
+    raise RuntimeError("GOOGLE_CREDENTIALS_JSON is not set")
+
+google_creds = json.loads(raw_creds)
 google_creds["private_key"] = google_creds["private_key"].replace("\\n", "\n")
+
 
 creds = Credentials.from_service_account_info(
     google_creds,
@@ -390,15 +395,15 @@ async def handle(message: types.Message):
             print("Начинаю запись в Google")
 
             try:
-               print('Вызываю Гугл')
-               save_to_google(user_data[user_id])
-               print('Выполнено')
+              print('Вызываю Гугл')
+              await asyncio.to_thread(save_to_google, user_data[user_id])
+              print('Выполнено')
+             
+              clear_user_state(user_id)
+              user_state[user_id] = None
+              user_data[user_id] = {}
 
-               clear_user_state(user_id)
-               user_state[user_id] = None
-               user_data[user_id] = {}
-
-               await message.answer(
+              await message.answer(
                 "Сохранено!",
                 reply_markup=main_menu()
             )
@@ -409,7 +414,7 @@ async def handle(message: types.Message):
 
             return
 
-     elif text == "Изменить":
+        elif text == "Изменить":
             user_state[user_id] = "edit_select"
             save_user_state(user_id)
 
