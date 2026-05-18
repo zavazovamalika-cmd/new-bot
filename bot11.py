@@ -360,9 +360,12 @@ async def handle(message: types.Message):
 
         if text == "Подтвердить":
             print("CONFIRM BUTTON PRESSED")
+            print("Начинаю запись в Google")
 
             try:
+               print('Вызываю Гугл')
                save_to_google(user_data[user_id])
+               print('Выполнено')
 
                clear_user_state(user_id)
                user_state[user_id] = None
@@ -374,6 +377,7 @@ async def handle(message: types.Message):
             )
 
             except Exception as e:
+               print('ОШИБКА')
                await message.answer(f"Ошибка: {e}")
 
             return
