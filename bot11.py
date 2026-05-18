@@ -177,7 +177,7 @@ def save_to_google(data):
     
     print('Открываю таблицу')
 
-    spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1ng2BZi-7_FeI7UUW55NcUP-oYZvrpAULB4FBp_baGFM/edit")
+    spreadsheet = client.open_by_url("https://docs.google.com/spreadsheets/d/1ng2BZi-7_FeI7UUW55NcUP-oYZvrpAULB4FBp_baGFM/edit?usp=sharing")
     print('Таблица открыта')
     manager = data["manager"]  
     
