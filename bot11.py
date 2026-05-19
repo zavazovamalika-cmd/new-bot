@@ -13,7 +13,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from google.oauth2.service_account import Credentials
 from google.oauth2.credentials import Credentials as OAuthCredentials
 
-scope = [
+GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive"
 ]
@@ -29,22 +29,31 @@ google_creds["private_key"] = google_creds["private_key"].replace("\\n", "\n")
 
 creds = Credentials.from_service_account_info(
     google_creds,
-    scopes=scope
+    scopes=GOOGLE_SCOPES
 )
 client = gspread.authorize(creds)
+
+oauth_refresh_token = os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN")
+oauth_client_id = os.getenv("GOOGLE_OAUTH_CLIENT_ID")
+oauth_client_secret = os.getenv("GOOGLE_OAUTH_CLIENT_SECRET")
+if not oauth_refresh_token or not oauth_client_id or not oauth_client_secret:
+    raise RuntimeError("Google OAuth variables are not set")
+
 drive_creds = OAuthCredentials(
     token=None,
-    refresh_token=os.getenv("GOOGLE_OAUTH_REFRESH_TOKEN"),
+    refresh_token=oauth_refresh_token,
     token_uri="https://oauth2.googleapis.com/token",
-    client_id=os.getenv("GOOGLE_OAUTH_CLIENT_ID"),
-    client_secret=os.getenv("GOOGLE_OAUTH_CLIENT_SECRET"),
+    client_id=oauth_client_id,
+    client_secret=oauth_client_secret,
     scopes=["https://www.googleapis.com/auth/drive"],
 )
 
 drive_service = build("drive", "v3", credentials=drive_creds)
 
 
-TOKEN = "8678766563:AAHFf6TWhwGQD1zRQGmFAKnQF_sCWskp2oA"
+TOKEN = os.getenv("BOT_TOKEN")
+if not TOKEN:
+    raise RuntimeError("BOT_TOKEN is not set")
 
 
 bot = Bot(token=TOKEN)
@@ -64,12 +73,6 @@ CREATE TABLE IF NOT EXISTS user_states (
 )
 """)
 conn.commit()
-
-
-scope = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive"
-]
 
 
 FOLDER_ID = "1krFtQyYp9ov82O_DixgHfRhVQquku4Tf"
